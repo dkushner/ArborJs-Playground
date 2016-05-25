@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { rename } from '../modules/workspace';
 
-import Workspace from 'components/Workspace';
+import Workspace from '../components/Workspace';
 
 const mapActionCreators = { rename };
 
