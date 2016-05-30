@@ -1,10 +1,13 @@
 import React from 'react';
 import classes from './Workspace.scss';
+import ToolboxContainer from '../../containers/ToolboxContainer';
 
 export const Workspace = (props) => (
   <div className={classes.workspace}>
     <div className={classes.upper}>
-      <div className={classes.toolboxContainer}></div>
+      <div className={classes.toolboxContainer}>
+        <ToolboxContainer />
+      </div>
       <div className={classes.stageContainer}></div>
     </div>
     <div className={classes.lower}>

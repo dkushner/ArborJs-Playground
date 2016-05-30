@@ -5,9 +5,12 @@ export default (store) => ({
   getComponent(nextState, cb) {
     require.ensure([], (require) => {
       const Workspace = require('./containers/WorkspaceContainer').default;
-      const reducer = require('./modules/workspace').default;
 
-      injectReducer(store, { key: 'workspace', reducer });
+      const workspaceReducer = require('./modules/workspace').default;
+      const toolboxReducer = require('./modules/toolbox').default;
+
+      injectReducer(store, { key: 'workspace', reducer: workspaceReducer });
+      injectReducer(store, { key: 'toolbox', reducer: toolboxReducer });
 
       cb(null, Workspace);
     }, 'workspace');

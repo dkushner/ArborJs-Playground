@@ -8,9 +8,9 @@ class AppContainer extends React.Component {
     routes: PropTypes.object.isRequired,
     routerKey: PropTypes.number,
     store: PropTypes.object.isRequired
-  }
+  };
 
-  render () {
+  render() {
     const { history, routes, routerKey, store } = this.props;
 
     return (
@@ -19,7 +19,7 @@ class AppContainer extends React.Component {
           <Router history={history} children={routes} key={routerKey} />
         </div>
       </Provider>
-    )
+    );
   }
 }
 
