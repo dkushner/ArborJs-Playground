@@ -1,8 +1,9 @@
 import React from 'react';
 import classes from './Workspace.scss';
 import ToolboxContainer from '../../containers/ToolboxContainer';
+import ScrubContainer from '../../containers/ScrubContainer';
 
-export const Workspace = (props) => (
+export const Workspace = ({ name }) => (
   <div className={classes.workspace}>
     <div className={classes.upper}>
       <div className={classes.toolboxContainer}>
@@ -11,7 +12,9 @@ export const Workspace = (props) => (
       <div className={classes.stageContainer}></div>
     </div>
     <div className={classes.lower}>
-      <div className={classes.scrubContainer}></div>
+      <div className={classes.scrubContainer}>
+        <ScrubContainer />
+      </div>
     </div>
   </div>
 );

@@ -5,7 +5,7 @@ import Workspace from '../components/Workspace';
 const mapActionCreators = { rename };
 
 const mapStateToProps = (state) => ({
-  name: state.name
+  name: state.workspace.name
 });
 
 export default connect(mapStateToProps, mapActionCreators)(Workspace);
