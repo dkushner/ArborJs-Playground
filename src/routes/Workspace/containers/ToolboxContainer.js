@@ -1,17 +1,18 @@
 import { connect } from 'react-redux';
-import { addRule, removeRule, setRenderMode } from '../modules/toolbox';
+import { addRule, removeRule, setRenderMode, toggleInfo } from '../modules/toolbox';
 import Toolbox from '../components/Toolbox';
 
 const mapActionCreators = {
   addRule,
   removeRule,
-  setRenderMode
+  setRenderMode,
+  toggleInfo
 };
 
 const mapStateToProps = (state) => ({
   constants: state.toolbox.constants,
   rules: state.toolbox.rules,
-  grammar: state.toolbox.grammar,
+  open: state.toolbox.open,
   mode: state.toolbox.mode
 });
 

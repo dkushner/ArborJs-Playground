@@ -3,6 +3,7 @@ import Arbor from 'arborjs';
 export const ADD_RULE = 'ADD_RULE';
 export const REMOVE_RULE = 'REMOVE_RULE';
 export const SET_RENDER_MODE = 'SET_RENDER_MODE';
+export const TOGGLE_INFO = 'TOGGLE_INFO';
 
 export function addRule(rule) {
   return { type: ADD_RULE, rule };
@@ -16,10 +17,15 @@ export function setRenderMode(mode) {
   return { type: SET_RENDER_MODE, mode };
 }
 
+export function toggleInfo() {
+  return { type: TOGGLE_INFO };
+}
+
 export const actions = { 
   addRule,
   removeRule,
-  setRenderMode
+  setRenderMode,
+  toggleInfo
 };
 
 const ACTION_HANDLERS = {
@@ -28,8 +34,6 @@ const ACTION_HANDLERS = {
     const rules = state.rules.filter((existing) => {
       return existing.symbol != rule.symbol;
     });
-
-    console.log(rules, rule);
 
     return { 
       ...state, 
@@ -49,106 +53,158 @@ const ACTION_HANDLERS = {
     return { 
       ...state, 
       mode,
-      grammar: RENDER_MODES[mode].grammar,
-      constants: RENDER_MODES[mode].constants
+      constants: CONSTANTS[mode]
+    };
+  },
+  [TOGGLE_INFO]: (state, action) => {
+    return {
+      ...state,
+      open: !state.open
     };
   }
 };
 
-export const SPLINE = "SPLINE";
-export const CURVE = "CURVE";
-export const TEXT = "TEXT";
+export const RenderMode = {
+  SPLINE: "SPLINE",
+  CURVE: "CURVE",
+  TEXT: "TEXT"
+};
 
-const RENDER_MODES = {
-  [SPLINE]: {
-    get grammar() {
-      let grammar = new Arbor.Grammar();
-      grammar.addRule("!(x)");
-      grammar.addRule("@(x, y, z)");
-      grammar.addRule("#(r, g, b, a)");
-      grammar.addRule("[");
-      grammar.addRule("]");
-      return grammar;
-    },
-    constants: [{
-      form: "!(x)",
-      description: "Moves the turtle forward by x units."
+const CONSTANTS = {
+  [RenderMode.SPLINE]: [{
+    symbol: "!",
+    parameters: [{
+      name: "x",
+      description: "The number of units to move forward."
+    }],
+    description: "Moves turtle forward by the given number of units."
+  }, {
+    symbol: "@",
+    parameters: [{
+      name: "x",
+      description: "Degree of rotation about X axis."
     }, {
-      form: "@(x, y, z)",
-      description: "Rotates the turtle by x, y and z degrees about each axis."
+      name: "y",
+      description: "Degree of rotation about Y axis."
     }, {
-      form: "#(r, g, b, a)",
-      description: "Changes the active line color for the turtle." 
+      name: "z",
+      description: "Degree of rotation about Z axis."
+    }],
+    description: "Rotates the orientation of the turtle in three dimensions."
+  }, {
+    symbol: "#",
+    parameters: [{
+      name: "r",
+      description: "The red value of the desired color."
     }, {
-      form: "[",
-      description: "Push the turtle's state onto the stack."
+      name: "g",
+      description: "The green value of the desired color."
     }, {
-      form: "]",
-      description: "Pop the turtle's state, returning it to the last." 
-    }]
-  },
-  [CURVE]: {
-    get grammar() {
-      let grammar = new Arbor.Grammar();
-      grammar.addRule("!(x)");
-      grammar.addRule("@(x, y, z)");
-      grammar.addRule("#(r, g, b, a)");
-      grammar.addRule("[");
-      grammar.addRule("]");
-      return grammar;
-    },
-    constants: [{
-      form: "!(x)",
-      description: "Moves the turtle forward by x units."
+      name: "b",
+      description: "The blue value of the desired color."
+    }],
+    description: "Changes the active line color." 
+  }, {
+    symbol: "[",
+    parameters: [],
+    description: "Push the turtle's state onto the stack."
+  }, {
+    symbol: "]",
+    parameters: [],
+    description: "Pop the turtle's state, returning it to the last." 
+  }],
+  [RenderMode.CURVE]: [{
+    symbol: "!",
+    parameters: [{
+      name: "x",
+      description: "The number of units to move forward."
+    }],
+    description: "Moves turtle forward by the given number of units."
+  }, {
+    symbol: "@",
+    parameters: [{
+      name: "x",
+      description: "Degree of rotation about X axis."
     }, {
-      form: "@(x)",
-      description: "Rotates the turtle by x, y and z degrees about each axis."
+      name: "y",
+      description: "Degree of rotation about Y axis."
     }, {
-      form: "#(r, g, b, a)",
-      description: "Changes the active line color for the turtle." 
+      name: "z",
+      description: "Degree of rotation about Z axis."
+    }],
+    description: "Rotates the orientation of the turtle in three dimensions."
+  }, {
+    symbol: "#",
+    parameters: [{
+      name: "r",
+      description: "The red value of the desired color."
     }, {
-      form: "[",
-      description: "Push the turtle's state onto the stack."
+      name: "g",
+      description: "The green value of the desired color."
     }, {
-      form: "]",
-      description: "Pop the turtle's state, returning it to the last." 
-    }]
-  },
-  [TEXT]: {
-    get grammar() {
-      let grammar = new Arbor.Grammar();
-      grammar.addRule("!(x)");
-      grammar.addRule("@(x, y, z)");
-      grammar.addRule("#(r, g, b, a)");
-      grammar.addRule("[");
-      grammar.addRule("]");
-      return grammar;
-    },
-    constants: [{
-      form: "!(x)",
-      description: "Moves the turtle forward by x units."
+      name: "b",
+      description: "The blue value of the desired color."
+    }],
+    description: "Changes the active line color." 
+  }, {
+    symbol: "[",
+    parameters: [],
+    description: "Push the turtle's state onto the stack."
+  }, {
+    symbol: "]",
+    parameters: [],
+    description: "Pop the turtle's state, returning it to the last." 
+  }],
+  [RenderMode.TEXT]: [{
+    symbol: "!",
+    parameters: [{
+      name: "x",
+      description: "The number of units to move forward."
+    }],
+    description: "Moves turtle forward by the given number of units."
+  }, {
+    symbol: "@",
+    parameters: [{
+      name: "x",
+      description: "Degree of rotation about X axis."
     }, {
-      form: "@(x)",
-      description: "Rotates the turtle by x, y and z degrees about each axis."
+      name: "y",
+      description: "Degree of rotation about Y axis."
     }, {
-      form: "#(r, g, b, a)",
-      description: "Changes the active line color for the turtle." 
+      name: "z",
+      description: "Degree of rotation about Z axis."
+    }],
+    description: "Rotates the orientation of the turtle in three dimensions."
+  }, {
+    symbol: "#",
+    parameters: [{
+      name: "r",
+      description: "The red value of the desired color."
     }, {
-      form: "[",
-      description: "Push the turtle's state onto the stack."
+      name: "g",
+      description: "The green value of the desired color."
     }, {
-      form: "]",
-      description: "Pop the turtle's state, returning it to the last." 
-    }]
-  }
+      name: "b",
+      description: "The blue value of the desired color."
+    }],
+    description: "Changes the active line color." 
+  }, {
+    symbol: "[",
+    parameters: [],
+    description: "Push the turtle's state onto the stack."
+  }, {
+    symbol: "]",
+    parameters: [],
+    description: "Pop the turtle's state, returning it to the last." 
+  }],
 };
 
 
 const initialState = {
   rules: [],
-  grammar: RENDER_MODES.SPLINE.grammar,
-  constants: RENDER_MODES.SPLINE.constants,
-  mode: "spline"
+  constants: CONSTANTS[RenderMode.SPLINE],
+  open: false,
+  mode: RenderMode.SPLINE
 };
 
 export default function toolboxReducer(state = initialState, action) {

@@ -1,0 +1,35 @@
+.container {
+  display: block;
+  margin-bottom: 0.5em;
+  font-size: 1rem;
+}
+
+.signature {
+  background: white;
+  color: #1abc9c;
+  padding: 0.25em 0.5em;
+  font-size: 1.5rem;
+  margin-right: 0.5em;
+  display: inline-block;
+}
+
+.parameters {
+  margin-top: 1em;
+}
+
+.parameter {
+  list-style: none;
+  margin-bottom: 0.5em;
+}
+
+.name {
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  border-radius: 50%;
+  display: inline-block;
+  background: #fff;
+  margin-right: 0.5em;
+  color: #1abc9c;
+  text-align: center;
+}

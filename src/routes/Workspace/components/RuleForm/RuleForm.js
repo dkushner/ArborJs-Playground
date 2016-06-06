@@ -32,23 +32,26 @@ class RuleForm extends React.Component {
     return errors;
   }
 
-  handleAddition(values, dispatch) {
-    return new Promise((resolve, reject) => {
-      try {
-        let rule = new Arbor.Rule(values.predecessor, values.production);
+  submit(values, dispatch) {
+    const { predecessor, production } = values;
+    const arglist = /\(\s*([^)]+?)\s*\)/.exec(predecessor);
 
-        dispatch(addRule({
-          symbol: rule.symbol,
-          predecessor: values.predecessor,
-          production: values.production || values.predecessor
-        }));
+    if (arglist && arglist[1]) {
+      let args = arglist[1].replace(/ /g, '').split(',');
+      dispatch(addRule({
+        symbol: predecessor[0],
+        parameters: args,
+        production: production || predecessor
+      }));
+    } else {
+      dispatch(addRule({
+        symbol: predecessor[0],
+        parameters: [],
+        production: production || predecessor
+      }));
+    }
 
-        dispatch(reset('rule'));
-        resolve();
-      } catch (e) {
-        reject({ _error: "There was a problem." });
-      }
-    });
+    dispatch(reset('rule'));
   }
 
   handleChange(field, event) {
@@ -62,7 +65,7 @@ class RuleForm extends React.Component {
     const handleProduction = this.handleChange.bind(this, 'production');
 
     return (
-      <form onSubmit={handleSubmit(this.handleAddition.bind(this))}>
+      <form onSubmit={handleSubmit(this.submit)}>
         <div className={classes.container}>
           <div className={classes.fieldset}>
             <div className={classes.fieldGroup}>
