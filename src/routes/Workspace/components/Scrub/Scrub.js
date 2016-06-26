@@ -3,7 +3,7 @@ import classes from './Scrub.scss';
 
 class Scrub extends React.Component {
   render() {
-    const { axiom, setAxiom } = this.props;
+    const { axiom, setAxiom, togglePlayback, playing } = this.props;
 
     return (
       <div className={classes.scrub}>
@@ -21,8 +21,14 @@ class Scrub extends React.Component {
             <button className={classes.secondary}>
               <i className={"fa fa-fast-backward"} />
             </button>
-            <button className={"btn " + classes.primary}>
-              <i className={"fa fa-play"} />
+            <button className={"btn " + classes.primary} onClick={togglePlayback}>
+              {(() => {
+                if (playing) {
+                  return <i className={"fa fa-pause"} />;
+                } else {
+                  return <i className={"fa fa-play"} />;
+                }
+              })()}
             </button>
             <button className={classes.secondary}>
               <i className={"fa fa-fast-forward"} />

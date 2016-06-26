@@ -41,12 +41,14 @@ class RuleForm extends React.Component {
       dispatch(addRule({
         symbol: predecessor[0],
         parameters: args,
+        predecessor,
         production: production || predecessor
       }));
     } else {
       dispatch(addRule({
         symbol: predecessor[0],
         parameters: [],
+        predecessor,
         production: production || predecessor
       }));
     }

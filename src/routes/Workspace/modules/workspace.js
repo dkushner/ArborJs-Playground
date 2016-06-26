@@ -1,10 +1,13 @@
 export const RENAME_WORKSPACE = 'RENAME_WORKSPACE';
+export const ADD_ERROR = 'ADD_ERROR';
 
 export function rename(name) {
   return { type: RENAME_WORKSPACE, name };
 }
 
-export const actions = { rename };
+export const actions = { 
+  rename
+};
 
 const ACTION_HANDLERS = {
   [RENAME_WORKSPACE]: (state, action) => {

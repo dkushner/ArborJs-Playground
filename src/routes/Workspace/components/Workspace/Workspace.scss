@@ -44,3 +44,40 @@
   height: 100%;
   background: #2c3e50;
 }
+
+.error-enter {
+  opacity: 0.01;
+}
+
+.error-enter-active {
+  opacity: 1;
+  transition: opacity 5000ms ease-in;
+}
+
+.error-leave {
+  opacity: 1;
+}
+
+.error-leave-active {
+  opacity: 0.01;
+  transition: opacity 3000ms ease-in;
+}
+
+.errors {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 500;
+  width: 300px;
+
+  :global .notif-container > span > div {
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    padding: 1rem !important;
+    background: #e74c3c;
+    border-left: 5px solid #c0392b;
+    font-size: 1rem;
+    color: #fff;
+    padding: 1em;
+  }
+}

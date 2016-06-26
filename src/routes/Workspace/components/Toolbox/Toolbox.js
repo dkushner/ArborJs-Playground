@@ -3,8 +3,7 @@ import classes from './Toolbox.scss';
 import classNames from 'classnames';
 import { RenderMode } from '../../modules/toolbox';
 import Dropdown from 'react-dropdown';
-import RuleForm from '../RuleForm';
-import RuleItem from '../RuleItem';
+import Rule from '../Rule';
 import ConstantItem from '../ConstantItem';
 import Arbor from 'arborjs';
 
@@ -20,7 +19,14 @@ class Toolbox extends React.Component {
 
   render() {
     const { constants, rules, mode, open } = this.props;
-    const { addRule, removeRule, setRenderMode, toggleInfo } = this.props;
+    const { 
+      addRule, 
+      updateRule, 
+      removeRule, 
+      toggleEdit,
+      setRenderMode, 
+      toggleInfo 
+    } = this.props;
 
     const infoClass = classNames(classes.info, { [classes.open]: open });
 
@@ -47,12 +53,21 @@ class Toolbox extends React.Component {
           </div>
           <div className={classes.toolboxSection}>
             <span className={classes.sectionTitle}>Rule Set</span>
-            <RuleForm />
             <div className={classes.rules}>
               {rules.map((rule) => {
-                return (<RuleItem key={rule.symbol} onRemove={removeRule} {...rule} />);
+                return (
+                  <Rule key={rule.ruleId} 
+                        onRemove={removeRule}
+                        onUpdate={updateRule}
+                        onEdit={toggleEdit}
+                        {...rule} />
+                );
               })}
             </div>
+            <a className={classes.addRule} href="#" onClick={addRule}>
+              <i className={"fa fa-plus-square-o"} />
+              <span>Add a new rule</span>
+            </a>
           </div>
         </div>
         <div className={infoClass}>

@@ -1,12 +1,13 @@
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
 import { reducer as formReducer } from 'redux-form';
+import { reducer as notifReducer } from 're-notif';
 
 export const makeRootReducer = (asyncReducers) => {
   return combineReducers({
-    // Add sync reducers here
     router,
     form: formReducer,
+    notifs: notifReducer,
     ...asyncReducers
   });
 }

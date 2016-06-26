@@ -13,12 +13,13 @@
   height: 5px;
   background: lighten(#2c3e50, 10%);
   position: absolute;
-  bottom: 100%;
+  top: 0;
   left: 0;
   z-index: 500;
 }
 
 .actions {
+  overflow: hidden;
   width: 100%;
   height: 100%;
   display: flex;
@@ -57,6 +58,10 @@
   &:hover {
     color: #fff;
   }
+}
+
+.axiom {
+  padding-top: 5px;
 }
 
 .axiom label {

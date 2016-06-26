@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
-import { setTrack, setPlayback, setAxiom } from '../modules/scrub';
+import { setTrack, togglePlayback, setAxiom } from '../modules/scrub';
 import Scrub from '../components/Scrub';
 
 const mapActionCreators = {
   setTrack,
-  setPlayback,
+  togglePlayback,
   setAxiom
 };
 
 const mapStateToProps = (state) => ({
   position: state.scrub.position,
-  mode: state.scrub.mode,
+  playing: state.scrub.playing,
   axiom: state.scrub.axiom
 });
 
