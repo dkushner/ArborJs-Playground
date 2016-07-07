@@ -2,9 +2,9 @@ import Arbor from 'arborjs';
 import _ from 'lodash';
 
 export const ADD_RULE = 'ADD_RULE';
-export const UPDATE_RULE = 'UPDATE_RULE';
-export const TOGGLE_EDIT = 'TOGGLE_EDIT';
 export const REMOVE_RULE = 'REMOVE_RULE';
+export const TOGGLE_RULE = 'TOGGLE_RULE';
+export const SET_PREDECESSOR = 'SET_PREDECESSOR';
 export const SET_RENDER_MODE = 'SET_RENDER_MODE';
 export const TOGGLE_INFO = 'TOGGLE_INFO';
 
@@ -18,12 +18,12 @@ export function addRule() {
   };
 }
 
-export function updateRule(ruleId, predecessor, production) {
-  return { type: UPDATE_RULE, ruleId, predecessor, production };
+export function setPredecessor(ruleId, value) {
+  return { type: SET_PREDECESSOR, ruleId, value };
 }
 
-export function toggleEdit(ruleId, part) {
-  return { type: TOGGLE_EDIT, ruleId, part };
+export function toggleRule(ruleId) {
+  return { type: TOGGLE_RULE, ruleId };
 }
 
 export function removeRule(ruleId) {
@@ -40,8 +40,8 @@ export function toggleInfo() {
 
 export const actions = { 
   addRule,
-  updateRule,
-  toggleEdit,
+  setPredecessor,
+  toggleRule,
   removeRule,
   setRenderMode,
   toggleInfo
@@ -49,38 +49,49 @@ export const actions = {
 
 /* Action Handlers */
 const ACTION_HANDLERS = {
-  [UPDATE_RULE]: (state, action) => {
-    const { ruleId , predecessor, production } = action;
-    const rules = [...state.rules]; 
+  [SET_PREDECESSOR]: (state, action) => {
+    const { ruleId, value } = action;
+    const { rules } = state;
 
-    const rule = rules.find(r => r.ruleId == ruleId);
-    rule.predecessor.raw = predecessor.replace(/\s/g, '');
-    rule.production.raw = production.replace(/\s/g, '');
+    const ruleIndex = rules.findIndex(rule => rule.ruleId == ruleId);
+    const rule = Object.assign({}, rules[ruleIndex]);
+    rule.predecessor.value = value;
 
-    return { ...state, rules };
+    return {
+      ...state,
+      rules: [
+        ...rules.slice(0, ruleIndex),
+        rule,
+        ...rules.slice(ruleIndex + 1)
+      ]
+    };
   },
-  [TOGGLE_EDIT]: (state, action) => {
-    const { ruleId, part } = action;
-    const rules = [...state.rules];
+  [TOGGLE_RULE]: (state, action) => {
+    const { ruleId } = action;
 
-    const rule = rules.find(r => r.ruleId == ruleId);
-    rule[part].editing = !rule[part].editing;
+    const ruleIndex = state.rules.findIndex(rule => rule.ruleId == ruleId);
+    const rule = {
+      ...state.rules[ruleIndex],
+      open: !state.rules[ruleIndex].open
+    };
 
-    return { ...state, rules };
+    return {
+      ...state,
+      rules: [
+        ...state.rules.slice(0, ruleIndex),
+        rule,
+        ...state.rules.slice(ruleIndex + 1)
+      ]
+    };
   },
   [ADD_RULE]: (state, action) => {
     const rule = { 
       ruleId: action.ruleId,
+      open: false,
       predecessor: {
-        raw: "",
-        editing: false,
-        parameters: []
+        value: ""
       },
-      production: {
-        raw: "",
-        editing: false,
-        references: []
-      }
+      production: {}
     };
 
     return { 
@@ -91,11 +102,15 @@ const ACTION_HANDLERS = {
   [REMOVE_RULE]: (state, action) => {
     const { ruleId } = action;
 
-    const rules = state.rules.filter((existing) => {
-      return existing.ruleId != ruleId;
-    });
+    const ruleIndex = state.rules.findIndex(rule => rule.ruleId == ruleId);
 
-    return { ...state, rules };
+    return { 
+      ...state,
+      rules: [
+        ...state.rules.slice(0, ruleIndex),
+        ...state.rules.slice(ruleIndex + 1)
+      ]
+    };
   },
   [SET_RENDER_MODE]: (state, action) => {
     const mode = action.mode;

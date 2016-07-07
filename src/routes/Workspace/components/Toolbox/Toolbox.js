@@ -21,9 +21,9 @@ class Toolbox extends React.Component {
     const { constants, rules, mode, open } = this.props;
     const { 
       addRule, 
-      updateRule, 
+      setPredecessor,
+      toggleRule,
       removeRule, 
-      toggleEdit,
       setRenderMode, 
       toggleInfo 
     } = this.props;
@@ -35,6 +35,12 @@ class Toolbox extends React.Component {
       { value: RenderMode.CURVE, label: "Curve" },
       { value: RenderMode.TEXT, label: "Text" }
     ];
+
+    const ruleActions = {
+      toggleRule,
+      removeRule,
+      setPredecessor
+    };
 
     const modeValue = modeOptions.find(e => e.value == mode);
 
@@ -57,9 +63,7 @@ class Toolbox extends React.Component {
               {rules.map((rule) => {
                 return (
                   <Rule key={rule.ruleId} 
-                        onRemove={removeRule}
-                        onUpdate={updateRule}
-                        onEdit={toggleEdit}
+                        {...ruleActions}
                         {...rule} />
                 );
               })}

@@ -1,52 +1,64 @@
 .container {
   position: relative;
+  font-size: 1rem;
+  height: 3em;
+  vertical-align: middle;
+  overflow: hidden;
+  background: #2980b9;
+  color: #fff;
+
+  a {
+    color: #fff;
+  }
+
+  input {
+    background: none;
+    outline: 0;
+    border: none;
+
+    &:hover, &:focus {
+      background: rgba(0, 0, 0, 0.2);
+    }
+  }
+
+  &.open {
+    height: auto;
+  }
 }
 
-.definition {
+.predecessor {
   position: relative;
+  height: 3em;
   display: flex;
   flex-flow: row;
   flex-wrap: nowrap;
   align-content: stretch;
+  align-items: center;
   width: 100%;
 }
 
-.predecessor {
+.toggle {
+  order: 0;
   flex: 0 1 auto;
-  font-size: 1rem;
-  min-width: 5em;
-  display: block;
-  position: relative;
 }
 
-.production {
-  position: relative;
+.signature {
+  order: 1;
   flex: 1 1 auto;
-  font-size: 1rem;
-  display: block;
-}
-
-.predecessor,
-.production {
-  outline: none;
-  padding: 1rem;
-  min-height: 3rem;
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-  }
 }
 
 .remove {
-  position: absolute;
-  font-weight: 200;
-  top: 0;
-  right: 0;
-  font-size: 1rem;
-  padding: 1rem;
-  color: rgba(#fff, 0.6);
+  order: 3;
+  flex: 0 1 auto;
+}
 
-  &:hover {
-    color: #fff;
-  }
+.handle {
+  order: 2;
+  flex: 0 1 auto;
+}
+
+.toggle,
+.remove,
+.handle {
+  padding: 0 1em;
 }

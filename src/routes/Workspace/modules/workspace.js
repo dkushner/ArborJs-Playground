@@ -1,6 +1,10 @@
 export const RENAME_WORKSPACE = 'RENAME_WORKSPACE';
 export const ADD_ERROR = 'ADD_ERROR';
 
+export const ItemTypes = {
+  RULE: 'RULE'
+};
+
 export function rename(name) {
   return { type: RENAME_WORKSPACE, name };
 }

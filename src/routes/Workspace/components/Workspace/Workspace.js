@@ -5,6 +5,9 @@ import _ from 'lodash';
 import { Notifs } from 're-notif';
 import ScrubContainer from '../../containers/ScrubContainer';
 import StageContainer from '../../containers/StageContainer';
+import { DragDropContext } from 'react-dnd';
+import WorkspaceDragLayer from '../WorkspaceDragLayer';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 class Workspace extends React.Component {
   static propTypes = {
@@ -30,6 +33,7 @@ class Workspace extends React.Component {
 
     return (
       <div className={classes.workspace}>
+        <WorkspaceDragLayer />
         <div className={classes.upper}>
           <div className={classes.toolboxContainer}>
             <ToolboxContainer />
@@ -51,4 +55,4 @@ class Workspace extends React.Component {
   }
 }
 
-export default Workspace;
+export default DragDropContext(HTML5Backend)(Workspace);

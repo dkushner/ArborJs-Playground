@@ -1,77 +1,84 @@
 import React, { PropTypes } from 'react';
 import classes from './Rule.scss';
+import { DragSource } from 'react-dnd';
+import { ItemTypes } from '../../modules/workspace';
 import classNames from 'classnames';
+import { getEmptyImage } from 'react-dnd-html5-backend';
 import Arbor from 'arborjs';
+
+const ruleSource = {
+  beginDrag(props) {
+    return { 
+      signature: props.predecessor.value
+    };
+  }
+};
+
+function collect(connect, monitor) {
+  return {
+    connectDragSource: connect.dragSource(),
+    connectDragPreview: connect.dragPreview(),
+    isDragging: monitor.isDragging()
+  };
+}
 
 class Rule extends React.Component {
   static propTypes = {
     ruleId: PropTypes.string.isRequired,
+    open: PropTypes.bool.isRequired,
     predecessor: PropTypes.object.isRequired,
-    production: PropTypes.object.isRequired
+    production: PropTypes.object.isRequired,
+    removeRule: PropTypes.func.isRequired,
+    updateRule: PropTypes.func.isRequired,
+    setPredecessor: PropTypes.func.isRequired,
+    isDragging: PropTypes.bool.isRequired,
+    connectDragSource: PropTypes.func.isRequired,
+    connectDragPreview: PropTypes.func.isRequired
   };
 
-  componentDidUpdate(props, state) {
-    if (props.predecessor.editing) {
-      this.refs.predecessor.focus();
-    }
-
-    if (props.production.editing) {
-      this.refs.production.focus();
-    }
+  handlePredecessorChange() {
+    const { ruleId, setPredecessor } = this.props;
+    setPredecessor(ruleId, this.refs.predecessor.value);
   }
 
-  handleKeyDown(target, event) {
-    console.log(event.which);
-    if (event.which == 13 || event.which == 27) {
-      event.preventDefault();
-      this.refs[target].blur();
-    }
-  }
-
-  handleBlur(target) {
-    const { ruleId, onEdit, onUpdate } = this.props;
-    const { predecessor, production } = this.refs;
-    onEdit(ruleId, target);
-    onUpdate(ruleId, predecessor.textContent, production.textContent);
+  componentDidMount() {
+    this.props.connectDragPreview(getEmptyImage());
   }
 
   render() {
-    const { ruleId, predecessor, production, onRemove, onUpdate, onEdit } = this.props;
+    const { ruleId, open, predecessor, production } = this.props;
+    const { removeRule, toggleRule, setPredecessor } = this.props;
+    const { connectDragSource, isDragging } = this.props;
 
-    const predecessorClasses = classNames(classes.predecessor, {
-      [classes.editing]: predecessor.editing
-    });
+    const containerClass = classNames([classes.container, { open: open && !isDragging }]);
 
-    const productionClasses = classNames(classes.production, {
-      [classes.editing]: production.editing
-    });
+    const dragSource = connectDragSource(
+      <div className={classes.handle}>
+        <i className={"fa fa-ellipsis-v"}></i>
+      </div>
+    );
 
     return (
-      <div className={classes.container}>
-        <div className={classes.definition}>
-          <div className={predecessorClasses}
-               ref="predecessor" 
-               contentEditable={predecessor.editing}
-               onClick={() => !predecessor.editing && onEdit(ruleId, "predecessor")}
-               onKeyDown={this.handleKeyDown.bind(this, "predecessor")}
-               onBlur={this.handleBlur.bind(this, "predecessor")}>
-            {predecessor.raw}
-          </div>
-          <div className={productionClasses}
-               ref="production" 
-               contentEditable={production.editing}
-               onClick={() => !production.editing && onEdit(ruleId, "production")}
-               onKeyDown={this.handleKeyDown.bind(this, "production")}
-               onBlur={this.handleBlur.bind(this, "production")}>
-            {production.raw}
-          </div>
+      <div className={containerClass}>
+        <div className={classes.predecessor}>
+          <a className={classes.toggle} href="#" onClick={() => toggleRule(ruleId)}>
+            {open ? String.fromCharCode(9660) : String.fromCharCode(9654)}
+          </a>
+          <input type="text" 
+                 ref="predecessor"
+                 value={predecessor.value} 
+                 className={classes.signature}
+                 onChange={this.handlePredecessorChange.bind(this)} />
+          <a className={classes.remove} 
+             href="#" 
+             onClick={() => removeRule(ruleId)}>
+            <i className={"fa fa-times"} />
+          </a>
+          {dragSource}
         </div>
-        <a href="#" className={classes.remove} onClick={() => onRemove(ruleId)}>
-          <i className={"fa fa-close"} />
-        </a>
       </div>
     );
   }
 }
 
-export default Rule;
+export default DragSource(ItemTypes.RULE, ruleSource, collect)(Rule);
