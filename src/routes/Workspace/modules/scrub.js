@@ -6,6 +6,7 @@ import { actions as notif } from 're-notif';
 export const SET_TRACK = 'SET_TRACK';
 export const TOGGLE_PLAYBACK = 'TOGGLE_PLAYBACK';
 export const SET_PLAYBACK = 'SET_PLAYBACK';
+export const UPDATE_AXIOM = 'UPDATE_AXIOM';
 export const SET_AXIOM = 'SET_AXIOM';
 
 /** Private Actions **/
@@ -90,7 +91,7 @@ const ACTION_HANDLERS = {
 const initialState = {
   position: 0.0,
   playing: false,
-  axiom: ''
+  axiom: []
 };
 
 export default function scrubReducer(state = initialState, action) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import classes from './Scrub.scss';
+import Axiom from '../Axiom';
 
 class Scrub extends React.Component {
   render() {
@@ -11,10 +12,7 @@ class Scrub extends React.Component {
           <div className={classes.head} />
         </div>
         <div className={"col-md-4"}>
-          <div className={classes.axiom}>
-            <label className={classes.label}>Axiom</label>
-            <input type="text" value={axiom} onChange={(e) => setAxiom(e.target.value)} />
-          </div>
+          <Axiom />
         </div>
         <div className={"col-md-4"}>
           <div className={classes.actions}>

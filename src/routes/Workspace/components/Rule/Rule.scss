@@ -42,6 +42,10 @@
   flex: 0 1 auto;
 }
 
+.open .toggle {
+  transform: rotate(90deg);
+}
+
 .signature {
   order: 1;
   flex: 1 1 auto;

@@ -9,7 +9,8 @@ import Arbor from 'arborjs';
 const ruleSource = {
   beginDrag(props) {
     return { 
-      signature: props.predecessor.value
+      signature: props.predecessor.value,
+      ruleId: props.ruleId
     };
   }
 };
@@ -29,7 +30,6 @@ class Rule extends React.Component {
     predecessor: PropTypes.object.isRequired,
     production: PropTypes.object.isRequired,
     removeRule: PropTypes.func.isRequired,
-    updateRule: PropTypes.func.isRequired,
     setPredecessor: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
     connectDragSource: PropTypes.func.isRequired,
@@ -50,7 +50,9 @@ class Rule extends React.Component {
     const { removeRule, toggleRule, setPredecessor } = this.props;
     const { connectDragSource, isDragging } = this.props;
 
-    const containerClass = classNames([classes.container, { open: open && !isDragging }]);
+    const containerClass = classNames([classes.container, { 
+      [classes.open]: open && !isDragging 
+    }]);
 
     const dragSource = connectDragSource(
       <div className={classes.handle}>
@@ -62,7 +64,7 @@ class Rule extends React.Component {
       <div className={containerClass}>
         <div className={classes.predecessor}>
           <a className={classes.toggle} href="#" onClick={() => toggleRule(ruleId)}>
-            {open ? String.fromCharCode(9660) : String.fromCharCode(9654)}
+            {String.fromCharCode(9654)}
           </a>
           <input type="text" 
                  ref="predecessor"
