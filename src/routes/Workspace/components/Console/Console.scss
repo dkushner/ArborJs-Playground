@@ -1,0 +1,56 @@
+.container {
+  font-family: "Source Code Pro", Courier, monospace;
+  color: rgba(0, 255, 0, 1);
+
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: stretch;
+  align-content: stretch;
+}
+
+.buffer {
+  order: 0;
+  flex: 1 1 auto;
+}
+
+.prompt {
+  order: 1;
+  flex: 0 1 auto;
+  font-size: 1rem;
+  padding: 1em;
+}
+
+.cursor {
+  display: inline-block;
+  position: relative;
+  padding: 0;
+  border: 1px solid #00ff00;
+  text-align: center;
+  background: transparent;
+  margin: 0;
+  outline: 0;
+  width: 1em;
+  animation: cursor-blink 1s step-end infinite;
+
+  &:focus, &:active {
+    background: #00ff00;
+    color: #000;
+    text-shadow: 0 0 0 black;
+    color: transparent;
+    animation: none;
+  }
+}
+
+@keyframes cursor-blink {
+  from, to {
+    background: transparent;
+  }
+
+  50% {
+    background: #00ff00;
+  }
+}

@@ -1,13 +1,9 @@
 import React from 'react';
 import classes from './Workspace.scss';
-import ToolboxContainer from '../../containers/ToolboxContainer';
 import _ from 'lodash';
 import { Notifs } from 're-notif';
-import ScrubContainer from '../../containers/ScrubContainer';
+import ConsoleContainer from '../../containers/ConsoleContainer';
 import StageContainer from '../../containers/StageContainer';
-import { DragDropContext } from 'react-dnd';
-import WorkspaceDragLayer from '../WorkspaceDragLayer';
-import HTML5Backend from 'react-dnd-html5-backend';
 
 class Workspace extends React.Component {
   static propTypes = {
@@ -33,26 +29,15 @@ class Workspace extends React.Component {
 
     return (
       <div className={classes.workspace}>
-        <WorkspaceDragLayer />
-        <div className={classes.upper}>
-          <div className={classes.toolboxContainer}>
-            <ToolboxContainer />
-          </div>
-          <div ref="stage" className={classes.stageContainer}>
-            <StageContainer />
-          </div>
+        <div className={classes['console-container']}>
+          <ConsoleContainer />
         </div>
-        <div className={classes.lower}>
-          <div className={classes.scrubContainer}>
-            <ScrubContainer />
-          </div>
-        </div>
-        <div className={classes.errors}>
-          <Notifs />
+        <div ref="stage" className={classes['stage-container']}>
+          <StageContainer />
         </div>
       </div>
     );
   }
 }
 
-export default DragDropContext(HTML5Backend)(Workspace);
+export default Workspace;

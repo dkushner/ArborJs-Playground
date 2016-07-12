@@ -3,46 +3,17 @@
   width: 100vw;
 }
 
-.upper {
-  height: 100%;
-  width: 100%;
-  padding-bottom: 75px;
-  display: flex;
-  flex-flow: row;
-  align-items: stretch;
+.console-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 33vw;
+  height: 100vh;
 }
 
-.lower {
-  height: 75px;
-  width: 100%;
-  margin-top: -75px;
-}
-
-.toolboxContainer {
-  order: 0;
-  flex: 0 1 25%;
-  max-width: 480px;
-  height: 100%;
-  background: #34495e;
-}
-
-.workspaceTitle {
-  color: lighten(#34495e, 10%);
-  font-size: 2rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  padding: 1rem;
-}
-
-.stageContainer {
-  order: 1;
-  flex: 1 1 auto;
-}
-
-.scrubContainer {
-  width: 100%;
-  height: 100%;
-  background: #2c3e50;
+.stage-container {
+  width: 100vw;
+  height: 100vh;
 }
 
 .error-enter {

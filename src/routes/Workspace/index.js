@@ -7,14 +7,12 @@ export default (store) => ({
       const Workspace = require('./containers/WorkspaceContainer').default;
 
       const workspaceReducer = require('./modules/workspace').default;
-      const toolboxReducer = require('./modules/toolbox').default;
-      const scrubReducer = require('./modules/scrub').default;
       const stageReducer = require('./modules/stage').default;
+      const consoleReducer = require('./modules/console').default;
 
       injectReducer(store, { key: 'workspace', reducer: workspaceReducer });
-      injectReducer(store, { key: 'toolbox', reducer: toolboxReducer });
-      injectReducer(store, { key: 'scrub', reducer: scrubReducer });
       injectReducer(store, { key: 'stage', reducer: stageReducer });
+      injectReducer(store, { key: 'console', reducer: consoleReducer });
 
       cb(null, Workspace);
     }, 'workspace');
