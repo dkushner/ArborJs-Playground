@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { 
   addRule, 
   toggleRule,
+  toggleConstant,
   setPredecessor,
   removeRule, 
   setRenderMode, 
@@ -12,6 +13,7 @@ import Toolbox from '../components/Toolbox';
 const mapActionCreators = {
   addRule,
   toggleRule,
+  toggleConstant,
   setPredecessor,
   removeRule,
   setRenderMode,

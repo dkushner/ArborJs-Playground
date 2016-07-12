@@ -1,0 +1,62 @@
+.container {
+  position: relative;
+  font-size: 1rem;
+  height: 3em;
+  vertical-align: middle;
+  overflow: hidden;
+  background: white;
+  color: #1abc9c;
+
+  a {
+    color: #1abc9c;
+  }
+
+  &.open {
+    height: auto;
+  }
+}
+
+.predecessor {
+  position: relative;
+  height: 3em;
+  display: flex;
+  flex-flow: row;
+  flex-wrap: nowrap;
+  align-content: stretch;
+  align-items: center;
+  width: 100%;
+}
+
+.toggle {
+  order: 0;
+  flex: 0 1 auto;
+}
+
+.open .toggle {
+  transform: rotate(90deg);
+}
+
+.signature {
+  order: 1;
+  flex: 1 1 auto;
+}
+
+.remove {
+  order: 3;
+  flex: 0 1 auto;
+}
+
+.handle {
+  order: 2;
+  flex: 0 1 auto;
+}
+
+.toggle,
+.remove,
+.handle {
+  padding: 0 1em;
+}
+
+.description {
+  padding: 1em;
+}

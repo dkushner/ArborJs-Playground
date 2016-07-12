@@ -5,7 +5,7 @@ import { ItemTypes } from '../../modules/workspace';
 const layerStyle = {
   position: 'fixed',
   pointerEvents: 'none',
-  zIndex: 100,
+  zIndex: 999,
   left: 0,
   top: 0,
   width: '100%',
@@ -26,7 +26,10 @@ function getTransform(props) {
 
   return {
     transform: transform,
-    WebkitTransform: transform
+    WebkitTransform: transform,
+    width: "auto",
+    position: "absolute",
+    left: "1em"
   };
 }
 
@@ -61,7 +64,8 @@ class WorkspaceDragLayer extends React.Component {
         const style = {
           fontSize: "1rem",
           padding: "1em",
-          maxWidth: "5em",
+          width: "auto",
+          whiteSpace: "nowrap",
           background: "#2980b9",
           color: "#fff",
           opacity: 0.6

@@ -2,7 +2,8 @@ export const RENAME_WORKSPACE = 'RENAME_WORKSPACE';
 export const ADD_ERROR = 'ADD_ERROR';
 
 export const ItemTypes = {
-  RULE: 'RULE'
+  RULE: 'RULE',
+  PRODUCTION: 'PRODUCTION'
 };
 
 export function rename(name) {

@@ -3,8 +3,8 @@ import classes from './Rule.scss';
 import { DragSource } from 'react-dnd';
 import { ItemTypes } from '../../modules/workspace';
 import classNames from 'classnames';
+import ProductionSet from '../ProductionSet';
 import { getEmptyImage } from 'react-dnd-html5-backend';
-import Arbor from 'arborjs';
 
 const ruleSource = {
   beginDrag(props) {
@@ -28,7 +28,7 @@ class Rule extends React.Component {
     ruleId: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     predecessor: PropTypes.object.isRequired,
-    production: PropTypes.object.isRequired,
+    productions: PropTypes.array.isRequired,
     removeRule: PropTypes.func.isRequired,
     setPredecessor: PropTypes.func.isRequired,
     isDragging: PropTypes.bool.isRequired,
@@ -77,6 +77,9 @@ class Rule extends React.Component {
             <i className={"fa fa-times"} />
           </a>
           {dragSource}
+        </div>
+        <div className={classes.production}>
+          <ProductionSet ref="production" />
         </div>
       </div>
     );

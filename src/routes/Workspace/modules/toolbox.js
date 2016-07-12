@@ -4,11 +4,10 @@ import _ from 'lodash';
 export const ADD_RULE = 'ADD_RULE';
 export const REMOVE_RULE = 'REMOVE_RULE';
 export const TOGGLE_RULE = 'TOGGLE_RULE';
+export const TOGGLE_CONSTANT = 'TOGGLE_CONSTANT';
 export const SET_PREDECESSOR = 'SET_PREDECESSOR';
 export const SET_RENDER_MODE = 'SET_RENDER_MODE';
 export const TOGGLE_INFO = 'TOGGLE_INFO';
-
-/* Utility Functions */
 
 /* Action Definitions */
 export function addRule() {
@@ -24,6 +23,10 @@ export function setPredecessor(ruleId, value) {
 
 export function toggleRule(ruleId) {
   return { type: TOGGLE_RULE, ruleId };
+}
+
+export function toggleConstant(constantId) {
+  return { type: TOGGLE_CONSTANT, constantId };
 }
 
 export function removeRule(ruleId) {
@@ -42,6 +45,7 @@ export const actions = {
   addRule,
   setPredecessor,
   toggleRule,
+  toggleConstant,
   removeRule,
   setRenderMode,
   toggleInfo
@@ -63,6 +67,25 @@ const ACTION_HANDLERS = {
         ...rules.slice(0, ruleIndex),
         rule,
         ...rules.slice(ruleIndex + 1)
+      ]
+    };
+  },
+  [TOGGLE_CONSTANT]: (state, action) => {
+    const { constantId } = action;
+    const { constants } = state;
+
+    const constantIndex = constants.findIndex(constant => constant.constantId == constantId);
+    const constant = {
+      ...constants[constantIndex],
+      open: !constants[constantIndex].open
+    };
+
+    return {
+      ...state,
+      constants: [
+        ...constants.slice(0, constantIndex),
+        constant,
+        ...constants.slice(constantIndex + 1)
       ]
     };
   },
@@ -91,7 +114,7 @@ const ACTION_HANDLERS = {
       predecessor: {
         value: ""
       },
-      production: {}
+      productions: []
     };
 
     return { 
@@ -117,7 +140,13 @@ const ACTION_HANDLERS = {
     return { 
       ...state, 
       mode,
-      constants: CONSTANTS[mode]
+      constants: [...CONSTANTS[mode]].map(constant => {
+        return {
+          ...constant,
+          constantId: _.uniqueId("constant"),
+          open: false
+        };
+      })
     };
   },
   [TOGGLE_INFO]: (state, action) => {
@@ -137,7 +166,6 @@ export const RenderMode = {
 const CONSTANTS = {
   [RenderMode.SPLINE]: [{
     symbol: "!",
-    form: "!(x)",
     parameters: [{
       name: "x",
       description: "The number of units to move forward."
@@ -145,7 +173,6 @@ const CONSTANTS = {
     description: "Moves turtle forward by the given number of units."
   }, {
     symbol: "@",
-    form: "@(x, y, z)",
     parameters: [{
       name: "x",
       description: "Degree of rotation about X axis."
@@ -159,7 +186,6 @@ const CONSTANTS = {
     description: "Rotates the orientation of the turtle in three dimensions."
   }, {
     symbol: "#",
-    form: "#(r, g, b)",
     parameters: [{
       name: "r",
       description: "The red value of the desired color."
@@ -173,18 +199,19 @@ const CONSTANTS = {
     description: "Changes the active line color." 
   }, {
     symbol: "[",
-    form: "[",
     parameters: [],
     description: "Push the turtle's state onto the stack."
   }, {
     symbol: "]",
-    form: "]",
     parameters: [],
     description: "Pop the turtle's state, returning it to the last." 
-  }],
+  }].map(constant => ({
+    ...constant,
+    constantId: _.uniqueId("constant"),
+    open: false
+  })),
   [RenderMode.CURVE]: [{
     symbol: "!",
-    form: "!(d)",
     parameters: [{
       name: "x",
       description: "The number of units to move forward."
@@ -192,7 +219,6 @@ const CONSTANTS = {
     description: "Moves turtle forward by the given number of units."
   }, {
     symbol: "@",
-    form: "@(x, y, z)",
     parameters: [{
       name: "x",
       description: "Degree of rotation about X axis."
@@ -206,7 +232,6 @@ const CONSTANTS = {
     description: "Rotates the orientation of the turtle in three dimensions."
   }, {
     symbol: "#",
-    form: "#(r, g, b)",
     parameters: [{
       name: "r",
       description: "The red value of the desired color."
@@ -220,18 +245,19 @@ const CONSTANTS = {
     description: "Changes the active line color." 
   }, {
     symbol: "[",
-    form: "[",
     parameters: [],
     description: "Push the turtle's state onto the stack."
   }, {
     symbol: "]",
-    form: "]",
     parameters: [],
     description: "Pop the turtle's state, returning it to the last." 
-  }],
+  }].map(constant => ({
+    ...constant,
+    constantId: _.uniqueId("constant"),
+    open: false
+  })),
   [RenderMode.TEXT]: [{
     symbol: "!",
-    form: "!(d)",
     parameters: [{
       name: "x",
       description: "The number of units to move forward."
@@ -239,7 +265,6 @@ const CONSTANTS = {
     description: "Moves turtle forward by the given number of units."
   }, {
     symbol: "@",
-    form: "@(x, y, z)",
     parameters: [{
       name: "x",
       description: "Degree of rotation about X axis."
@@ -253,7 +278,6 @@ const CONSTANTS = {
     description: "Rotates the orientation of the turtle in three dimensions."
   }, {
     symbol: "#",
-    form: "#(r, g, b)",
     parameters: [{
       name: "r",
       description: "The red value of the desired color."
@@ -267,21 +291,23 @@ const CONSTANTS = {
     description: "Changes the active line color." 
   }, {
     symbol: "[",
-    form: "[",
     parameters: [],
     description: "Push the turtle's state onto the stack."
   }, {
     symbol: "]",
-    form: "]",
     parameters: [],
     description: "Pop the turtle's state, returning it to the last." 
-  }],
+  }].map(constant => ({ 
+    ...constant, 
+    constantId: _.uniqueId("constant"),
+    open: false
+  }))
 };
 
 
 const initialState = {
   rules: [],
-  constants: CONSTANTS[RenderMode.SPLINE],
+  constants: [...CONSTANTS[RenderMode.SPLINE]],
   open: false,
   mode: RenderMode.SPLINE
 };

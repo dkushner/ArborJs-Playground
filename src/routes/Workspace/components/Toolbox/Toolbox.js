@@ -2,9 +2,10 @@ import React, { PropTypes } from 'react';
 import classes from './Toolbox.scss';
 import classNames from 'classnames';
 import { RenderMode } from '../../modules/toolbox';
+import { ItemTypes } from '../../modules/workspace';
 import Dropdown from 'react-dropdown';
 import Rule from '../Rule';
-import ConstantItem from '../ConstantItem';
+import Constant from '../Constant';
 import Arbor from 'arborjs';
 
 class Toolbox extends React.Component {
@@ -14,6 +15,7 @@ class Toolbox extends React.Component {
     mode: PropTypes.string.isRequired,
     open: PropTypes.bool.isRequired,
     setRenderMode: PropTypes.func.isRequired,
+    toggleConstant: PropTypes.func.isRequired,
     addRule: PropTypes.func.isRequired
   };
 
@@ -22,6 +24,7 @@ class Toolbox extends React.Component {
     const { 
       addRule, 
       setPredecessor,
+      toggleConstant,
       toggleRule,
       removeRule, 
       setRenderMode, 
@@ -36,11 +39,8 @@ class Toolbox extends React.Component {
       { value: RenderMode.TEXT, label: "Text" }
     ];
 
-    const ruleActions = {
-      toggleRule,
-      removeRule,
-      setPredecessor
-    };
+    const ruleActions = { toggleRule, removeRule, setPredecessor };
+    const constantActions = { toggleConstant };
 
     const modeValue = modeOptions.find(e => e.value == mode);
 
@@ -61,11 +61,7 @@ class Toolbox extends React.Component {
             <span className={classes.sectionTitle}>Rule Set</span>
             <div className={classes.rules}>
               {rules.map((rule) => {
-                return (
-                  <Rule key={rule.ruleId} 
-                        {...ruleActions}
-                        {...rule} />
-                );
+                return (<Rule key={rule.ruleId} {...ruleActions} {...rule} />);
               })}
             </div>
             <a className={classes.addRule} href="#" onClick={addRule}>
@@ -79,8 +75,9 @@ class Toolbox extends React.Component {
             <div className={classes.infoSection}>
               <span className={classes.sectionTitle}>Constants</span>
               {constants.map((constant) => {
-                return (<ConstantItem key={constant.symbol} {...constant} />);
+                return (<Constant key={constant.symbol} {...constant} {...constantActions} />);
               })}
+              <span className={classes.sectionTitle}>Productions</span>
             </div>
           </div>
         </div>
