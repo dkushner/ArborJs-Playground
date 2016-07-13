@@ -12,32 +12,40 @@ class Console extends React.Component {
     }).isRequired
   };
 
-  handleInput(event) {
+  handleKeyPress(event) {
+    console.log(event.key);
+  }
+
+  handleKeyDown(event) {
     event.preventDefault();
-    const { command, cursor } = this.props;
-    const { insertCharacter, moveCursor, eraseCharacter, executeCommand } = this.props;
+
+    const { insertCharacter, eraseCharacter, moveCursor, executeCommand } = this.props;
+
+    if (event.key.length === 1) {
+      insertCharacter(event.key);
+      return;
+    }
+
     switch (event.key) {
+      case 'Backspace':
+        eraseCharacter();
+        break;
       case 'ArrowLeft':
         moveCursor(0, -1);
-        break;
-      case 'ArrowUp':
-        moveCursor(1, 0);
         break;
       case 'ArrowRight':
         moveCursor(0, 1);
         break;
+      case 'ArrowUp':
+        moveCursor(1, 0);
+        break;
       case 'ArrowDown':
         moveCursor(-1, 0);
-        break;
-      case 'Backspace':
-        eraseCharacter();
         break;
       case 'Enter':
         executeCommand();
         break;
-      default:
-        insertCharacter(event.key);
-        break;
+      default: break;
     }
   }
 
@@ -52,14 +60,14 @@ class Console extends React.Component {
         <div className={classes.buffer}>
         </div>
         <div className={classes.prompt}>
-          {prefix}
-          <input type="text" 
-                 ref="prompt" 
-                 value={command[cursor.column]}
-                 className={classes.cursor} 
-                 onKeyPress={(e) => e.preventDefault()}
-                 onKeyUp={this.handleInput.bind(this)} />
-          {suffix}
+          <span>{prefix}</span>
+          <span className={classes.cursor} 
+                ref="prompt" 
+                onKeyDown={this.handleKeyDown.bind(this)}
+                contentEditable>
+            {command[cursor.column]}
+          </span>
+          <span>{suffix}</span>
         </div>
       </div>
     );
