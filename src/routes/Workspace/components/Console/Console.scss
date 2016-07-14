@@ -1,5 +1,6 @@
 .container {
   font-family: "Source Code Pro", Courier, monospace;
+  font-size: 1rem;
   color: rgba(0, 255, 0, 1);
 
   width: 100%;
@@ -10,17 +11,26 @@
   justify-content: center;
   align-items: stretch;
   align-content: stretch;
+  word-break: break-all;
 }
 
 .buffer {
   order: 0;
+  font-size: 1em;
   flex: 1 1 auto;
+  padding: 1em;
+  overflow-y: scroll;
+
+  p {
+    font-size: 1em;
+    margin: 0;
+  }
 }
 
 .prompt {
   order: 1;
   flex: 0 1 auto;
-  font-size: 1rem;
+  font-size: 1em;
   padding: 1em;
 }
 

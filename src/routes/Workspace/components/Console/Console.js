@@ -12,10 +12,6 @@ class Console extends React.Component {
     }).isRequired
   };
 
-  handleKeyPress(event) {
-    console.log(event.key);
-  }
-
   handleKeyDown(event) {
     event.preventDefault();
 
@@ -49,6 +45,10 @@ class Console extends React.Component {
     }
   }
 
+  componentDidUpdate() {
+    this.refs.buffer.scrollTop = this.refs.buffer.scrollHeight;
+  }
+
   render() {
     const { command, history, output, cursor } = this.props;
 
@@ -57,9 +57,13 @@ class Console extends React.Component {
 
     return (
       <div className={classes.container}>
-        <div className={classes.buffer}>
+        <div className={classes.buffer} ref="buffer">
+          {output.map((line, index) => {
+            return (<p key={index}>{line}</p>);
+          })}
         </div>
         <div className={classes.prompt}>
+          >>&nbsp;
           <span>{prefix}</span>
           <span className={classes.cursor} 
                 ref="prompt" 
