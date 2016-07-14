@@ -9,8 +9,8 @@ const mapActionCreators = {
 
 const mapStateToProps = (state) => ({
   points: state.stage.points,
-  width: state.stage.width,
-  height: state.stage.height
+  width: state.browser.width,
+  height: state.browser.height
 });
 
 export default connect(mapStateToProps, mapActionCreators)(Stage);

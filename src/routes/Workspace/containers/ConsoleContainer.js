@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { 
   executeCommand,
-  insertCharacter,
+  insertText,
   eraseCharacter,
   deleteCharacter,
   moveCursor,
@@ -12,7 +12,7 @@ import Console from '../components/Console';
 
 const mapActionCreators = {
   executeCommand,
-  insertCharacter,
+  insertText,
   eraseCharacter,
   deleteCharacter,
   moveCursor,

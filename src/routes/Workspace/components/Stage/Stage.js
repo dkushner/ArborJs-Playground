@@ -23,10 +23,10 @@ class Stage extends React.Component {
     const { width, height, points } = this.props;
 
     const cameraProps = {
-      fov: 75,
+      fov: 45,
       aspect: width / height,
       near: 1,
-      far: 5000,
+      far: 100000,
       position: new THREE.Vector3(0, 0, 600),
       lookat: new THREE.Vector3(0, 0, 0)
     };

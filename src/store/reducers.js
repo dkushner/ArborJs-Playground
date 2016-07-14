@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { routerReducer as router } from 'react-router-redux';
+import { responsiveStateReducer } from 'redux-responsive';
 import { reducer as formReducer } from 'redux-form';
 import { reducer as notifReducer } from 're-notif';
 
@@ -8,6 +9,7 @@ export const makeRootReducer = (asyncReducers) => {
     router,
     form: formReducer,
     notifs: notifReducer,
+    browser: responsiveStateReducer,
     ...asyncReducers
   });
 }

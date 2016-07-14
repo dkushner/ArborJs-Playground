@@ -3,7 +3,7 @@ import { addRule } from './workspace';
 import { Grammar, Turtle3D } from 'arborjs';
 
 export const EXECUTE_COMMAND = 'EXECUTE_COMMAND';
-export const INSERT_CHARACTER = 'INSERT_CHARACTER';
+export const INSERT_TEXT = 'INSERT_TEXT';
 export const ERASE_CHARACTER = 'ERASE_CHARACTER';
 export const APPEND_HISTORY = 'APPEND_HISTORY';
 export const RESET_COMMAND = 'RESET_COMMAND';
@@ -27,9 +27,9 @@ function parseDefinition(definition) {
 
       const numeric = parseFloat(condition);
       if (Number.isNaN(numeric)) {
-        return [...set, { when: condition }];
+        return [...set, { when: condition, then: output }];
       } else {
-        return [...set, { chance: numeric }];
+        return [...set, { chance: numeric, then: output }];
       }
     }, []);
   } else {
@@ -44,7 +44,7 @@ const COMMANDS = {
 
     const grammar = new Grammar();
     // TODO: Replace this with default rules sourced from the mode.
-    grammar.addRule("#(x, y, z)");
+    grammar.addRule("#(r, g, b)");
     grammar.addRule("!(x)");
     grammar.addRule("@(x, y, z)");
     grammar.addRule("[");
@@ -54,11 +54,11 @@ const COMMANDS = {
       grammar.addRule(symbol, definition)
     });
 
-    console.log(axiom, args);
     const result = grammar.evaluate(axiom, parseFloat(iterations) || 1);
 
     const turtle = new Turtle3D();
-    const points = turtle.consume(grammar.tokenize(result));
+    const tokens = grammar.tokenize(result);
+    const points = turtle.consume(tokens);
 
     dispatch(setPoints(points));
   },
@@ -79,8 +79,8 @@ const COMMANDS = {
 };
 
 /** Action Creators **/
-export function insertCharacter(character) {
-  return { type: INSERT_CHARACTER, character };
+export function insertText(text) {
+  return { type: INSERT_TEXT, text };
 }
 
 export function moveCursor(line, column) {
@@ -135,7 +135,7 @@ export function clearScreen() {
 }
 
 export const actions = {
-  insertCharacter,
+  insertText,
   eraseCharacter,
   deleteCharacter,
   moveCursor,
@@ -145,16 +145,16 @@ export const actions = {
 };
 
 const ACTION_HANDLERS = {
-  [INSERT_CHARACTER]: (state, action) => {
+  [INSERT_TEXT]: (state, action) => {
     const { command, history, cursor } = state;
-    const { character } = action;
+    const { text } = action;
 
     const source = (cursor.line) ? history[cursor.line - 1] : command;
-    const pointer = { line: 0, column: cursor.column + 1 };
+    const pointer = { line: 0, column: cursor.column + text.length };
 
     const updated = [
       ...source.slice(0, cursor.column),
-      character,
+      text,
       ...source.slice(cursor.column)
     ].join('');
 
@@ -198,9 +198,7 @@ const ACTION_HANDLERS = {
 
     let pointer = { ...cursor };
 
-    console.log(line, column, history);
     if (line < 0 && cursor.line > 0) {
-      console.log(1);
       pointer.line = pointer.line - 1;
     } 
 
@@ -209,16 +207,13 @@ const ACTION_HANDLERS = {
     }
 
     if (column < 0 && cursor.column > 0) {
-      console.log(3);
       pointer.column = pointer.column - 1;
     }
 
     if (column > 0 && cursor.column <= command.length) {
-      console.log(4);
       pointer.column = pointer.column + 1;
     }
 
-    console.log(pointer);
     return {
       ...state,
       cursor: pointer,

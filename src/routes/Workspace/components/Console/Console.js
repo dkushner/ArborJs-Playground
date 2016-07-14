@@ -12,13 +12,24 @@ class Console extends React.Component {
     }).isRequired
   };
 
-  handleKeyDown(event) {
+  handlePaste(event) {
     event.preventDefault();
 
-    const { insertCharacter, eraseCharacter, moveCursor, executeCommand } = this.props;
+    const { insertText } = this.props;
+    insertText(event.clipboardData.getData('text/plain'));
+  }
+
+  handleKeyDown(event) {
+    if (event.altKey || event.ctrlKey || event.metaKey) {
+      return;
+    }
+
+    event.preventDefault();
+
+    const { insertText, eraseCharacter, moveCursor, executeCommand } = this.props;
 
     if (event.key.length === 1) {
-      insertCharacter(event.key);
+      insertText(event.key);
       return;
     }
 
@@ -67,6 +78,7 @@ class Console extends React.Component {
           <span>{prefix}</span>
           <span className={classes.cursor} 
                 ref="prompt" 
+                onPaste={this.handlePaste.bind(this)}
                 onKeyDown={this.handleKeyDown.bind(this)}
                 contentEditable>
             {command[cursor.column]}

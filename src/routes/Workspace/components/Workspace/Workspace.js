@@ -11,19 +11,6 @@ class Workspace extends React.Component {
     errors: React.PropTypes.array
   }
 
-  handleResize() {
-    const { setDimensions } = this.props;
-    const { width, height } = this.refs.stage.getBoundingClientRect();
-    setDimensions(width, height);
-  }
-
-  componentDidMount() {
-    window.addEventListener('resize', _.throttle(this.handleResize.bind(this), 300));
-    setTimeout(() => {
-      this.handleResize();
-    }, 500);
-  }
-
   render() {
     const { name, errors } = this.props;
 
